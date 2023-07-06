@@ -1,3 +1,7 @@
+from rest_framework import viewsets
+from home.models import Sdyu,Sgfr
+from .serializers import SdyuSerializer,SgfrSerializer
+from rest_framework import authentication
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.viewsets import ModelViewSet, ViewSet
 from rest_framework.authtoken.models import Token
@@ -28,3 +32,13 @@ class LoginViewSet(ViewSet):
         token, created = Token.objects.get_or_create(user=user)
         user_serializer = UserSerializer(user)
         return Response({"token": token.key, "user": user_serializer.data})
+
+class SgfrViewSet(viewsets.ModelViewSet):
+    serializer_class = SgfrSerializer
+    authentication_classes = (authentication.SessionAuthentication, authentication.TokenAuthentication)
+    queryset = Sgfr.objects.all()
+
+class SdyuViewSet(viewsets.ModelViewSet):
+    serializer_class = SdyuSerializer
+    authentication_classes = (authentication.SessionAuthentication, authentication.TokenAuthentication)
+    queryset = Sdyu.objects.all()
